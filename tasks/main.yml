@@ -7,4 +7,3 @@
     loop_var: system_systemd_timer_item
   when:
     system_systemd_timer is defined
-
