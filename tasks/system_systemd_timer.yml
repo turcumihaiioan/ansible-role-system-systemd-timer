@@ -1,0 +1,34 @@
+---
+- name: "{{ system_systemd_timer_item['key'] }} : ensuring service file"
+  ansible.builtin.template:
+    dest: "/etc/systemd/system/{{ system_systemd_timer_item['value']['name'] }}.service"
+    group: root
+    mode: 0644
+    owner: root
+    src: service.j2
+  register: service_result
+  when:
+    system_systemd_timer_item['value']['service'] is defined
+
+- name: "{{ system_systemd_timer_item['key'] }} : ensuring timer file"
+  ansible.builtin.template:
+    dest: "/etc/systemd/system/{{ system_systemd_timer_item['value']['name'] }}.timer"
+    group: root
+    mode: 0644
+    owner: root
+    src: timer.j2
+  register: timer_result
+
+- name: "{{ system_systemd_timer_item['key'] }} : reloading daemon"
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when:
+    service_result is defined and
+    service_result is changed or
+    timer_result is changed
+
+- name: "{{ system_systemd_timer_item['key'] }} : enabling timer"
+  ansible.builtin.systemd:
+    enabled: true
+    name: "{{ system_systemd_timer_item['value']['name'] }}.timer"
+    state: started
