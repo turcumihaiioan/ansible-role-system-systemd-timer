@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+#
+[Unit]
+Description={{ system_systemd_timer_item['value']['service']['description'] | default(system_systemd_timer_item['value']['name'] + ' service') }}
+
+[Service]
+Type=simple
+ExecStart={{ system_systemd_timer_item['value']['service']['execstart'] }}
+{% if system_systemd_timer_item['value']['service']['user'] is defined %}
+User={{ system_systemd_timer_item['value']['service']['user'] }}
+{% endif %}
