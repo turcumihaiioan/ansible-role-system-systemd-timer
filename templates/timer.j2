@@ -1,0 +1,33 @@
+# {{ ansible_managed }}
+#
+[Unit]
+Description={{ system_systemd_timer_item['value']['timer']['description'] | default(system_systemd_timer_item['value']['name'] + ' timer')}}
+
+[Timer]
+{% if system_systemd_timer_item['value']['timer']['onactivesec'] is defined %}
+OnActiveSec={{ system_systemd_timer_item['value']['timer']['onactivesec'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['timer']['onbootsec'] is defined %}
+OnBootSec={{ system_systemd_timer_item['value']['timer']['onbootsec'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['timer']['onstartupsec'] is defined %}
+OnStartupSec={{ system_systemd_timer_item['value']['timer']['onstartupsec'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['timer']['onunitactivesec'] is defined %}
+OnUnitActiveSec={{ system_systemd_timer_item['value']['timer']['onunitactivesec'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['timer']['onunitinactivesec'] is defined %}
+OnUnitInactiveSec={{ system_systemd_timer_item['value']['timer']['onunitinactivesec'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['timer']['oncalendar'] is defined %}
+OnCalendar={{ system_systemd_timer_item['value']['timer']['oncalendar'] }}
+{% if system_systemd_timer_item['value']['timer']['persistent'] is defined %}
+Persistent={{ system_systemd_timer_item['value']['timer']['persistent'] }}
+{% endif %}
+{% endif %}
+{% if system_systemd_timer_item['value']['timer']['accuracysec'] is defined %}
+AccuracySec={{ system_systemd_timer_item['value']['timer']['accuracysec'] }}
+{% endif %}
+
+[Install]
+WantedBy=timers.target
