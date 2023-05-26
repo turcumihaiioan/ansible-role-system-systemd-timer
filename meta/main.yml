@@ -1,0 +1,30 @@
+---
+galaxy_info:
+  role_name: system_systemd_timer
+  author: turcumihaiioan
+  description: role for managing systemd timer
+
+  license: GPL-3.0-only
+
+  min_ansible_version: "2.10"
+
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+
+  galaxy_tags:
+    - system
+    - systemd
+    - timer
+
+dependencies: []
