@@ -1,0 +1,56 @@
+---
+- name: "{{ system_systemd_timer_item['key'] }} : ensuring timer"
+  block:
+    - name: "{{ system_systemd_timer_item['key'] }} : ensuring timer unit file"
+      ansible.builtin.template:
+        dest: "/etc/systemd/system/{{ system_systemd_timer_item['value']['name'] }}.timer"
+        group: root
+        mode: '0644'
+        owner: root
+        src: timer.j2
+      register: system_systemd_timer_file_result
+    
+    - name: "{{ system_systemd_timer_item['key'] }} : reloading daemon"
+      ansible.builtin.systemd:
+        daemon_reload: true
+      when:
+        system_systemd_timer_file_result is changed
+
+    - name: "{{ system_systemd_timer_item['key'] }} : enabling and starting timer"
+      ansible.builtin.systemd:
+        enabled: true
+        name: "{{ system_systemd_timer_item['value']['name'] }}.timer"
+        state: started
+  when:
+    system_systemd_timer_item['value']['state'] is not defined or
+    system_systemd_timer_item['value']['state'] == "present"
+
+- name: "{{ system_systemd_timer_item['key'] }} : removing timer"
+  block:
+    - name: "{{ system_systemd_timer_item['key'] }} : disabling and stopping timer"
+      ansible.builtin.systemd:
+        enabled: false
+        name: "{{ system_systemd_timer_item['value']['name'] }}.timer"
+        state: stopped
+    
+    - name: "{{ system_systemd_timer_item['key'] }} : removing timer unit file"
+      ansible.builtin.file:
+        path: "/etc/systemd/system/{{ system_systemd_timer_item['value']['name'] }}.timer"
+        state: absent
+      register: system_systemd_timer_file_result
+    
+    - name: "{{ system_systemd_timer_item['key'] }} : reloading daemon"
+      ansible.builtin.systemd:
+        daemon_reload: true
+      when:
+        system_systemd_timer_file_result is changed
+  when:
+    - system_systemd_timer_item['value']['state'] is defined
+    - system_systemd_timer_item['value']['state'] == "absent"
+
+- name: "{{ system_systemd_timer_item['key'] }} : cleaning up fact"
+  ansible.builtin.set_fact:
+    system_systemd_timer_file_result:
+  when:
+    - system_systemd_timer_file_result is defined
+    - system_systemd_timer_file_result != ""

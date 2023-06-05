@@ -1,0 +1,39 @@
+# {{ ansible_managed }}
+#
+[Unit]
+Description={{ system_systemd_timer_item['value']['description'] | default(system_systemd_timer_item['value']['name'] + ' timer')}}
+
+[Timer]
+{% if system_systemd_timer_item['value']['accuracysec'] is defined %}
+AccuracySec={{ system_systemd_timer_item['value']['accuracysec'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['fixedrandomdelay'] is defined %}
+FixedRandomDelay={{ system_systemd_timer_item['value']['fixedrandomdelay'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['oncalendar'] is defined %}
+OnCalendar={{ system_systemd_timer_item['value']['oncalendar'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['onclockchange'] is defined %}
+OnClockChange={{ system_systemd_timer_item['value']['onclockchange'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['ontimezonechange'] is defined %}
+OnTimezoneChange={{ system_systemd_timer_item['value']['ontimezonechange'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['persistent'] is defined %}
+Persistent={{ system_systemd_timer_item['value']['persistent'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['randomizeddelaysec'] is defined %}
+RandomizedDelaySec={{ system_systemd_timer_item['value']['randomizeddelaysec'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['remainafterelaps'] is defined %}
+RemainAfterElaps={{ system_systemd_timer_item['value']['remainafterelaps'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['unit'] is defined %}
+Unit={{ system_systemd_timer_item['value']['unit'] }}
+{% endif %}
+{% if system_systemd_timer_item['value']['wakesystem'] is defined %}
+WakeSystem={{ system_systemd_timer_item['value']['wakesystem'] }}
+{% endif %}
+
+[Install]
+WantedBy=timers.target

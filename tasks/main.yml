@@ -1,0 +1,9 @@
+---
+- name: running system_systemd_timer tasks
+  ansible.builtin.include_tasks: system_systemd_timer.yml
+  loop: "{{ system_systemd_timer | dict2items }}"
+  loop_control:
+    label: "{{ system_systemd_timer_item['key'] }}"
+    loop_var: system_systemd_timer_item
+  when:
+    system_systemd_timer is defined
