@@ -57,6 +57,8 @@ Example Playbook
         oncalendar: daily
         persistent: true
         randomizeddelaysec: 12h
+  roles:
+    - turcumihaiioan.system_systemd_timer
 ```
 
 #### Remove a timer:
@@ -67,6 +69,8 @@ Example Playbook
       timer2:
         name: fstrim
         state: absent
+  roles:
+    - turcumihaiioan.system_systemd_timer
 ```
 
 
